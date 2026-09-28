@@ -6,6 +6,7 @@ import {
   HazardCatalog,
   FullyConfiguredIsotope,
   ShieldingGuide,
+  DecayMode,
 } from "./types";
 import { InMemoryRepository } from "./repository";
 
@@ -25,7 +26,7 @@ const uranium = registerIsotope({
   elementSymbol: "U",
   massNumber: 238,
   halfLifeInYears: 4468000000,
-  decayMode: "Alpha",
+  decayMode: DecayMode.Alpha,
   notes: "Primary natural uranium isotope",
 });
 
@@ -33,7 +34,7 @@ const cobalt = registerIsotope({
   elementSymbol: "Co",
   massNumber: 60,
   halfLifeInYears: 5.27,
-  decayMode: "Beta",
+  decayMode: DecayMode.Beta,
 });
 
 isotopeRepo.update(uranium.id, {
@@ -63,10 +64,22 @@ console.log("\nFully Configured Isotope Record");
 console.log(publishedIsotopeRecord);
 
 const hazardCatalog: HazardCatalog = {
-  Alpha: { hazardLevel: "Medium", shieldingRequired: "Paper or skin surface layer" },
-  Beta: { hazardLevel: "Medium", shieldingRequired: "Aluminum plate or Plexiglas" },
-  Gamma: { hazardLevel: "High", shieldingRequired: "Dense lead block or concrete walls" },
-  "Spontaneous Fission": { hazardLevel: "Critical", shieldingRequired: "Heavy water, paraffin, and thick concrete" },
+  Alpha: {
+    hazardLevel: "Medium",
+    shieldingRequired: "Paper or skin surface layer",
+  },
+  Beta: {
+    hazardLevel: "Medium",
+    shieldingRequired: "Aluminum plate or Plexiglas",
+  },
+  Gamma: {
+    hazardLevel: "High",
+    shieldingRequired: "Dense lead block or concrete walls",
+  },
+  "Spontaneous Fission": {
+    hazardLevel: "Critical",
+    shieldingRequired: "Heavy water, paraffin, and thick concrete",
+  },
 };
 
 // Mapped using Record
@@ -78,8 +91,14 @@ const shieldingGuide: ShieldingGuide = {
 };
 
 console.log("\nShielding Engineering Specifications");
-console.log("Alpha Hazard Level:", hazardCatalog[uranium.decayMode].hazardLevel);
-console.log("Corresponding Shielding Specs:", shieldingGuide[hazardCatalog[uranium.decayMode].hazardLevel]);
+console.log(
+  "Alpha Hazard Level:",
+  hazardCatalog[uranium.decayMode].hazardLevel,
+);
+console.log(
+  "Corresponding Shielding Specs:",
+  shieldingGuide[hazardCatalog[uranium.decayMode].hazardLevel],
+);
 
 function captureTelemetry<T>(sensorId: string, data: T): TelemetryPayload<T> {
   return {

@@ -1,9 +1,16 @@
+export enum DecayMode {
+  Alpha = "Alpha",
+  Beta = "Beta",
+  Gamma = "Gamma",
+  SpontaneousFission = "Spontaneous Fission",
+}
+
 export interface RadioactiveIsotope {
   id: string;
   elementSymbol: string;    // e.g., "U", "C", "Th"
   massNumber: number;       // e.g., 238, 14
   halfLifeInYears: number;  // Decay half-life
-  decayMode: "Alpha" | "Beta" | "Gamma" | "Spontaneous Fission";
+  decayMode: DecayMode;
   isStable: boolean;
   notes?: string;
 }
@@ -28,7 +35,6 @@ export type CreateIsotopeDTO = Omit<RadioactiveIsotope, "id" | "isStable">;
 
 export type IsotopeSummary = Pick<RadioactiveIsotope, "elementSymbol" | "massNumber" | "halfLifeInYears">;
 
-export type DecayMode = RadioactiveIsotope["decayMode"];
 export type SeverityLevel = "Low" | "Medium" | "High" | "Critical";
 export type HazardCatalog = Record<DecayMode, { hazardLevel: SeverityLevel; shieldingRequired: string }>;
 
