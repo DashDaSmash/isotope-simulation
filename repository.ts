@@ -11,7 +11,7 @@ export class InMemoryRepository<T extends { id: string }> implements StorageRepo
     return this.items.get(id);
   }
 
-  findAll(): T[] {
+  findAll(): readonly T[] {
     return Array.from(this.items.values());
   }
 

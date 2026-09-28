@@ -8,6 +8,8 @@ export interface RadioactiveIsotope {
   notes?: string;
 }
 
+export type FullyConfiguredIsotope = Required<RadioactiveIsotope>;
+
 export interface TelemetryPayload<T> {
   timestamp: number;
   sensorId: string;
@@ -17,7 +19,7 @@ export interface TelemetryPayload<T> {
 export interface StorageRepository<T extends { id: string }> {
   save(item: T): void;
   findById(id: string): T | undefined;
-  findAll(): T[];
+  findAll(): readonly T[];
 }
 
 export type IsotopeUpdateDTO = Partial<RadioactiveIsotope>;
@@ -27,4 +29,7 @@ export type CreateIsotopeDTO = Omit<RadioactiveIsotope, "id" | "isStable">;
 export type IsotopeSummary = Pick<RadioactiveIsotope, "elementSymbol" | "massNumber" | "halfLifeInYears">;
 
 export type DecayMode = RadioactiveIsotope["decayMode"];
-export type HazardCatalog = Record<DecayMode, { hazardLevel: "Low" | "Medium" | "High"; shieldingRequired: string }>;
+export type SeverityLevel = "Low" | "Medium" | "High" | "Critical";
+export type HazardCatalog = Record<DecayMode, { hazardLevel: SeverityLevel; shieldingRequired: string }>;
+
+export type ShieldingGuide = Record<SeverityLevel, {leadThicknessCm: number, requiresWaterBarrier: boolean}>;
